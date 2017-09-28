@@ -1,3 +1,11 @@
+//co2sealtest.ino
+/*arduino code that lets you save data on sd card with custom servo positioning, code record light intensity, co2, temperature and humidity. These are just quick and dirty code to make the 
+use putton 15(a0) and 16(a1) to move servo up and down
+1. move the first servo to desired open position, press 16 or a0 putton to confirm
+2. move the second servo to desired open position, make sure 2 servo on the same level. Then press confirm
+3. move both servo to closed position and it will stay shut untill button is confirm button is pressed again.
+*/
+
 #include <Servo.h>
 #include <Wire.h>
 #include <Adafruit_Sensor.h>
@@ -11,28 +19,28 @@ Adafruit_TSL2561_Unified tsl = Adafruit_TSL2561_Unified(TSL2561_ADDR_FLOAT, 1234
 
 #define UP 1
 #define DOWN 0
-#define UPBUT 14
-#define DOWNBUT 15
-#define ENTER 16
-#define SERVODELAY 80
+#define UPBUT 14  //a0
+#define DOWNBUT 15  //a1
+#define ENTER 16  //a2
+#define SERVODELAY 80   //delay for servo steping
 Servo leftservo;
 Servo rightservo;
-SoftwareSerial nss(6,7);
+SoftwareSerial nss(6,7);    //pin 6 and 7 are TX and RX for cozir
 COZIR czr(nss);
 
-const int chipSelect = 8;
-int l_servoinitpos;
-int r_servoinitpos;
-int l_servodestpos;
-int r_servodestpos;
+const int chipSelect = 8;     //chip select pin for SD card
+int l_servoinitpos;         //left servo open angle
+int r_servoinitpos;         //right servo open angle
+int l_servodestpos;         //left servo close angle
+int r_servodestpos;         //right servo close angle
 void setup() {
   Serial.begin(9600);
-  configureSensor();
-  SD.begin(chipSelect);
-  pinMode(UPBUT, INPUT);
+  configureSensor();            //COZIR libraryfunction
+  SD.begin(chipSelect);         
+  pinMode(UPBUT, INPUT);      
   pinMode(DOWNBUT, INPUT);
   pinMode(ENTER, INPUT);
-  leftservo.attach(9);
+  leftservo.attach(9);          //by attaching, it moves to 90 degree
   rightservo.attach(10);
   Serial.println("left servo begin calibration");
   setposition(leftservo, l_servoinitpos);
@@ -40,7 +48,7 @@ void setup() {
   setposition(rightservo, r_servoinitpos);
   Serial.println("place PETG, left and right servo final destination");
   setdestination();
-  czr.CalibrateFreshAir();
+  //czr.CalibrateFreshAir();      //this sets what ever it reads to 450ppm, read cozir manual for more detail
   delay(10000);
   Serial.println("NUMBER  LUX  CELCIUS  HUMITY CO2");
   
@@ -48,7 +56,7 @@ void setup() {
 
 void loop() 
 {
-  File dataFile = SD.open(filenamegenerator(), FILE_WRITE);
+  File dataFile = SD.open(filenamegenerator(), FILE_WRITE);       //filename generator make sure you don't overwrite what was previously saved on sd card
   dataFile.println("NUMBER  LUX  CELCIUS  HUMITY CO2");
   int num=1;
   while(digitalRead(ENTER)==LOW || num==)
@@ -73,7 +81,9 @@ void loop()
   Servo_movetoinitial();
   delay(100000000);
 }
-void Servo_movetofinal()
+
+
+void Servo_movetofinal()            //function to move servo to close function, with both servo simultaneously
 {
   while(leftservo.read()!=l_servodestpos)
   {
@@ -90,7 +100,7 @@ void Servo_movetofinal()
     delay(SERVODELAY);
   }
 }
-void Servo_movetoinitial()
+void Servo_movetoinitial()      //same thing with the Servo_movetofinal() function except it moves to open position
 {
   while(leftservo.read()!=l_servoinitpos)
   {
@@ -107,7 +117,7 @@ void Servo_movetoinitial()
     delay(SERVODELAY);
   }
 }
-void smallstep(Servo targetservo, int direction)
+void smallstep(Servo targetservo, int direction)    //function takes servo and direction as argumetn and move one step
 {
   int currentposition= targetservo.read();
   if(direction==1)
@@ -121,7 +131,7 @@ void smallstep(Servo targetservo, int direction)
   delay(100);
 }
 
-void setdestination()
+void setdestination()     //function to let you move both servo and set destination
 {
   while(digitalRead(ENTER)==LOW)
   {
@@ -145,7 +155,7 @@ void setdestination()
   Serial.print(l_servodestpos);Serial.println(r_servodestpos);
 }
 
-void setposition(Servo myservo, int& angle)
+void setposition(Servo myservo, int& angle)       //function that set argument integer to desired angle
 {
   while(digitalRead(ENTER)==LOW)
   {
@@ -179,7 +189,7 @@ String getlux()
 }
 
 //---------------------SD card function
-String filenamegenerator()
+String filenamegenerator()              //function that checks file in SD card to make sure not to overwrite previous saved data
 {
   for(int i=1; i<199; i++)
   {
