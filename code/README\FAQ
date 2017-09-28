@@ -1,0 +1,9 @@
+The co2grapher.py is intended to used for data format generated from sealtest.ino SD file.
+I personally would highly recommend you not to use my code reason being I basically just throw everything together to have a simple data logger that logs co2 and lux with servo control.
+
+Q: What does sealtest.ino does?
+A: Allows you to set position of servo position when it is open and close. Have it close until confirm button is pressed, then it open. Simple quick modification can be done to have automatic periodic open and close. 
+My original thought is to have variable that user can change for open and close duration, but I couldn't do it in time and frankly we were not there yet.
+
+Q: What does co2grapher.py do?
+A: It is a python program that parse and graphs the txt file saved on SD card. 
