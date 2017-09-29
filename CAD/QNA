@@ -1,0 +1,13 @@
+Q:Why rack and pinion?
+A:Only way I can think of that translate rotational motion of the servo to translational motion.
+
+Q:What happen to the small linear actuator?
+A:It doesn't give enough torque.
+
+Q:What are the setting and material of the 3d printed parts
+A:cheap PLA filament, 183 degree extrusion, 68 degree bed, .25mm layer height, 15% infil
+
+Q:Why don't you bump up infill to get rid of flex?
+A:You can but I am mostly concern on fit at the time.
+
+Q: 
