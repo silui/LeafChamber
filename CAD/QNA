@@ -10,4 +10,12 @@ A:cheap PLA filament, 183 degree extrusion, 68 degree bed, .25mm layer height, 1
 Q:Why don't you bump up infill to get rid of flex?
 A:You can but I am mostly concern on fit at the time.
 
-Q: 
+Q:What file should I download to print or modify the parts?
+A:STL if you just want to print, SLDPRT if you have solidworks and want to modify files, STEP if you have fusion360 or other CAD software
+
+Q:What printer and slicers were you using?
+A:Tronxy P802MA, simplify3d
+
+Q:Jaw of servo adapter kept breaking, what to do?
+A:Easiest way is to print it at a different X/Y angle so the no stress is put on layer adhesion. Downside is it requires more support material and longer print time.
+Or simply increase the distance of the jaw opening in CAD
