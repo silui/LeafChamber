@@ -27,7 +27,9 @@ Servo leftservo;
 Servo rightservo;
 SoftwareSerial nss(6,7);    //pin 6 and 7 are TX and RX for cozir
 COZIR czr(nss);
-
+//MOSI-pin 11
+//MISO-pin 12
+//SCK-pin 13
 const int chipSelect = 8;     //chip select pin for SD card
 int l_servoinitpos;         //left servo open angle
 int r_servoinitpos;         //right servo open angle
